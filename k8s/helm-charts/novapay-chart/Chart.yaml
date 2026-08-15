@@ -1,0 +1,9 @@
+apiVersion: v2
+name: novapay-chart
+description: Helm chart for NovaPay Microservices Fintech Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Prateek
+    email: prateek@novapay.com

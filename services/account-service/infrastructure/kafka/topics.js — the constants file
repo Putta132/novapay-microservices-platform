@@ -1,0 +1,23 @@
+// This file defines all topic names as constants
+// Using constants prevents typos: 'novapay.payments' vs 'novapay.payment'
+
+const TOPICS = {
+  PAYMENTS:      'novapay.payments',
+  TRANSACTIONS:  'novapay.transactions',
+  ACCOUNTS:      'novapay.accounts',
+  NOTIFICATIONS: 'novapay.notifications',
+  AUDIT:         'novapay.audit',
+};
+
+const PAYMENT_EVENTS = {
+  INITIATED: 'payment.initiated',
+  COMPLETED: 'payment.completed',
+  FAILED:    'payment.failed',
+};
+
+// Each service needs its own consumer group
+// Kafka delivers each message to ONE consumer in a group
+const CONSUMER_GROUPS = {
+  TRANSACTION_SERVICE:  'novapay-transaction-service',
+  NOTIFICATION_SERVICE: 'novapay-notification-service',
+};

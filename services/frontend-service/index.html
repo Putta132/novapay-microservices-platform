@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaPay — Digital Banking Platform</title>
+  <meta name="description" content="NovaPay — Secure, fast, and modern digital banking platform for instant payments and transfers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════ LOGIN PAGE ═══ -->
+  <div id="login-page" class="page active">
+    <div class="login-bg">
+      <div class="login-glow"></div>
+      <div class="login-glow2"></div>
+    </div>
+    <div class="login-card">
+      <div class="brand">
+        <div class="brand-icon">₹</div>
+        <div class="brand-name">NovaPay</div>
+        <div class="brand-tagline">Digital Banking Platform</div>
+      </div>
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required />
+        </div>
+        <div id="login-error" class="error-msg hidden"></div>
+        <button type="submit" id="login-btn" class="btn-primary">
+          <span id="login-btn-text">Sign In</span>
+          <span id="login-spinner" class="spinner hidden"></span>
+        </button>
+        <div class="login-footer">
+          <span>Don't have an account?</span>
+          <a href="#" id="go-register">Create Account</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ REGISTER PAGE ═══ -->
+  <div id="register-page" class="page">
+    <div class="login-bg">
+      <div class="login-glow"></div>
+      <div class="login-glow2"></div>
+    </div>
+    <div class="login-card">
+      <div class="brand">
+        <div class="brand-icon">₹</div>
+        <div class="brand-name">NovaPay</div>
+        <div class="brand-tagline">Create Your Account</div>
+      </div>
+      <form id="register-form" class="login-form">
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="reg-phone">Phone Number</label>
+          <input type="tel" id="reg-phone" placeholder="+91 9876543210" required />
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="Min 8 characters" required />
+        </div>
+        <div id="register-error" class="error-msg hidden"></div>
+        <div id="register-success" class="success-msg hidden"></div>
+        <button type="submit" id="register-btn" class="btn-primary">
+          <span id="register-btn-text">Create Account</span>
+          <span id="register-spinner" class="spinner hidden"></span>
+        </button>
+        <div class="login-footer">
+          <span>Already have an account?</span>
+          <a href="#" id="go-login">Sign In</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ DASHBOARD PAGE ═══ -->
+  <div id="dashboard-page" class="page">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon sm">₹</div>
+        <span>NovaPay</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="overview" id="nav-overview">
+          <span class="nav-icon">◈</span> Overview
+        </a>
+        <a href="#" class="nav-item" data-section="send-money" id="nav-send">
+          <span class="nav-icon">↑</span> Send Money
+        </a>
+        <a href="#" class="nav-item" data-section="transactions" id="nav-txn">
+          <span class="nav-icon">⇄</span> Transactions
+        </a>
+        <a href="#" class="nav-item" data-section="notifications" id="nav-notif">
+          <span class="nav-icon">🔔</span> Notifications
+          <span class="badge" id="notif-badge">0</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-pill" id="user-pill">
+          <div class="user-avatar" id="user-avatar">U</div>
+          <div class="user-info">
+            <div class="user-name" id="user-name-side">User</div>
+            <div class="user-status">● Active</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="logout-btn">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-btn" id="menu-btn">☰</button>
+          <div class="topbar-title" id="topbar-title">Overview</div>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-time" id="topbar-time"></div>
+          <div class="topbar-user">
+            <div class="user-avatar sm" id="topbar-avatar">U</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ─── OVERVIEW SECTION ─── -->
+      <section class="section active" id="section-overview">
+        <div class="section-inner">
+
+          <!-- Balance Cards Row -->
+          <div class="cards-row">
+            <div class="balance-card card-purple">
+              <div class="card-label">Total Balance</div>
+              <div class="card-amount" id="total-balance">Loading...</div>
+              <div class="card-acct" id="account-number">Account: ···</div>
+              <div class="card-chip">●●●●</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green">↑</div>
+              <div class="stat-info">
+                <div class="stat-label">Total Sent</div>
+                <div class="stat-value" id="total-sent">₹0</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon blue">↓</div>
+              <div class="stat-info">
+                <div class="stat-label">Total Received</div>
+                <div class="stat-value" id="total-received">₹0</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon orange">⇄</div>
+              <div class="stat-info">
+                <div class="stat-label">Transactions</div>
+                <div class="stat-value" id="txn-count">0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <div class="section-heading">Quick Actions</div>
+            <div class="action-grid">
+              <button class="action-btn" onclick="showSection('send-money')">
+                <div class="action-icon purple">↑</div>
+                <div>Send Money</div>
+              </button>
+              <button class="action-btn" onclick="showSection('transactions')">
+                <div class="action-icon blue">⇄</div>
+                <div>History</div>
+              </button>
+              <button class="action-btn" onclick="showSection('notifications')">
+                <div class="action-icon green">🔔</div>
+                <div>Alerts</div>
+              </button>
+              <button class="action-btn" onclick="refreshDashboard()">
+                <div class="action-icon orange">↻</div>
+                <div>Refresh</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="recent-txn">
+            <div class="section-heading">Recent Transactions</div>
+            <div class="txn-list" id="recent-txn-list">
+              <div class="loading-state">Loading transactions...</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─── SEND MONEY SECTION ─── -->
+      <section class="section" id="section-send-money">
+        <div class="section-inner">
+          <div class="form-card">
+            <div class="form-card-title">Send Money</div>
+            <div class="form-card-sub">Transfer funds securely via NovaPay</div>
+            <form id="payment-form">
+              <div class="form-group">
+                <label for="recipient-email">Recipient Email</label>
+                <input type="email" id="recipient-email" placeholder="recipient@example.com" required />
+              </div>
+              <div class="form-group">
+                <label for="payment-amount">Amount (₹)</label>
+                <input type="number" id="payment-amount" placeholder="Enter amount" min="1" required />
+              </div>
+              <div class="form-group">
+                <label for="payment-note">Note (Optional)</label>
+                <input type="text" id="payment-note" placeholder="What is this for?" />
+              </div>
+              <div id="payment-error" class="error-msg hidden"></div>
+              <div id="payment-success" class="success-msg hidden"></div>
+              <button type="submit" id="pay-btn" class="btn-primary">
+                <span id="pay-btn-text">Send Money →</span>
+                <span id="pay-spinner" class="spinner hidden"></span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Live Status -->
+          <div class="status-card">
+            <div class="status-title">Payment Pipeline</div>
+            <div class="pipeline">
+              <div class="pipe-step" id="pipe-gateway">
+                <div class="pipe-dot"></div>
+                <div class="pipe-label">API Gateway</div>
+                <div class="pipe-status">Ready</div>
+              </div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" id="pipe-auth">
+                <div class="pipe-dot"></div>
+                <div class="pipe-label">Auth Check</div>
+                <div class="pipe-status">Ready</div>
+              </div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" id="pipe-payment">
+                <div class="pipe-dot"></div>
+                <div class="pipe-label">Payment Service</div>
+                <div class="pipe-status">Ready</div>
+              </div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" id="pipe-kafka">
+                <div class="pipe-dot"></div>
+                <div class="pipe-label">Kafka Queue</div>
+                <div class="pipe-status">Ready</div>
+              </div>
+              <div class="pipe-line"></div>
+              <div class="pipe-step" id="pipe-notify">
+                <div class="pipe-dot"></div>
+                <div class="pipe-label">Notification</div>
+                <div class="pipe-status">Ready</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── TRANSACTIONS SECTION ─── -->
+      <section class="section" id="section-transactions">
+        <div class="section-inner">
+          <div class="section-heading">Transaction History</div>
+          <div class="filter-row">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="credit">Received</button>
+            <button class="filter-btn" data-filter="debit">Sent</button>
+          </div>
+          <div class="txn-list full" id="full-txn-list">
+            <div class="loading-state">Loading transactions...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── NOTIFICATIONS SECTION ─── -->
+      <section class="section" id="section-notifications">
+        <div class="section-inner">
+          <div class="section-heading">Notifications</div>
+          <div class="notif-list" id="notif-list">
+            <div class="loading-state">Loading notifications...</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

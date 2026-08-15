@@ -1,0 +1,78 @@
+# ── Global Settings ────────────────────────────────────────────
+global:
+  environment: production
+  imageRegistry: "176741405526.dkr.ecr.ap-south-1.amazonaws.com"
+
+# ── Microservice Configurations ────────────────────────────────
+services:
+  auth:
+    name: auth-service
+    port: 3001
+    replicas: 2
+    image: "novapay/auth-service"
+    tag: "latest"
+
+  account:
+    name: account-service
+    port: 3000
+    replicas: 2
+    image: "novapay/account-service"
+    tag: "latest"
+
+  gateway:
+    name: gateway-service
+    port: 3002
+    replicas: 2
+    image: "novapay/gateway-service"
+    tag: "latest"
+
+  payment:
+    name: payment-service
+    port: 3004
+    replicas: 2
+    image: "novapay/payment-service"
+    tag: "latest"
+
+  transaction:
+    name: transaction-service
+    port: 3005
+    replicas: 2
+    image: "novapay/transaction-service"
+    tag: "latest"
+
+  notification:
+    name: notification-service
+    port: 3003
+    replicas: 2
+    image: "novapay/notification-service"
+    tag: "latest"
+
+  frontend:
+    name: frontend-service
+    port: 80
+    replicas: 2
+    image: "novapay/frontend-service"
+    tag: "latest"
+
+# ── Resource Limits (CPU & RAM per pod) ────────────────────────
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# ── Horizontal Pod Autoscaler (HPA) Settings ───────────────────
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+# ── Environment Variables ───────────────────────────────────────
+env:
+  JWT_SECRET: "novapay-production-secret"
+  REDIS_HOST: "redis-service"
+  KAFKA_BROKERS: "kafka-service:9092"
+  NODE_ENV: "production"
