@@ -167,11 +167,11 @@ resource "aws_eks_cluster" "novapay_eks" {
 
 resource "aws_eks_node_group" "novapay_nodes" {
   cluster_name    = aws_eks_cluster.novapay_eks.name
-  node_group_name = "novapay-node-group"
+  node_group_name = "novapay-node-group-v2"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids      = [aws_subnet.public_1.id, aws_subnet.public_2.id]
 
-  instance_types = ["t3.medium"]
+  instance_types = ["t3.small"]
 
   scaling_config {
     desired_size = 2
