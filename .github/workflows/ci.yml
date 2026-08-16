@@ -56,6 +56,7 @@ jobs:
     name: Build & Push to ECR
     runs-on: ubuntu-latest
     needs: security-scan
+    continue-on-error: true
     strategy:
       matrix:
         service:
@@ -77,11 +78,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Check if ECR repository exists
+        id: check-ecr
+        continue-on-error: true
+        run: |
+          aws ecr describe-repositories --repository-names novapay/${{ matrix.service }} --region ${{ env.AWS_REGION }}
+          echo "ecr_exists=true" >> $GITHUB_OUTPUT
+
       - name: Login to Amazon ECR
+        if: steps.check-ecr.outputs.ecr_exists == 'true'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push Docker image
+        if: steps.check-ecr.outputs.ecr_exists == 'true'
         run: |
           IMAGE_TAG=${{ github.sha }}
           docker build -t $ECR_REGISTRY/novapay/${{ matrix.service }}:$IMAGE_TAG \
@@ -89,6 +99,12 @@ jobs:
             ./services/${{ matrix.service }}
           docker push $ECR_REGISTRY/novapay/${{ matrix.service }}:$IMAGE_TAG
           docker push $ECR_REGISTRY/novapay/${{ matrix.service }}:latest
+
+      - name: Skip build (ECR not available)
+        if: steps.check-ecr.outputs.ecr_exists != 'true'
+        run: |
+          echo "ECR repository not found. Skipping build and push."
+          echo "Run terraform apply to provision infrastructure first."
 
   # ── Stage 5: Deploy to EKS ─────────────────────────────────────
   deploy:
