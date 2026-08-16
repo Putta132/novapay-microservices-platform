@@ -107,13 +107,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Check if EKS Cluster exists
+        id: check-cluster
+        continue-on-error: true
+        run: |
+          aws eks describe-cluster --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+          echo "cluster_exists=true" >> $GITHUB_OUTPUT
+
       - name: Connect kubectl to EKS
+        if: steps.check-cluster.outputs.cluster_exists == 'true'
         run: |
           aws eks update-kubeconfig \
             --name ${{ env.EKS_CLUSTER_NAME }} \
             --region ${{ env.AWS_REGION }}
 
       - name: Deploy to EKS using Helm
+        if: steps.check-cluster.outputs.cluster_exists == 'true'
         run: |
           helm upgrade --install novapay \
             k8s/helm-charts/novapay-chart \
@@ -122,6 +131,13 @@ jobs:
             --timeout 5m
 
       - name: Verify deployment
+        if: steps.check-cluster.outputs.cluster_exists == 'true'
         run: |
           kubectl get pods -n default
           kubectl get services -n default
+
+      - name: Skip deployment (Cluster not active)
+        if: steps.check-cluster.outputs.cluster_exists != 'true'
+        run: |
+          echo "EKS Cluster is not active. Skipping deployment."
+          echo "Run terraform apply to provision the cluster before deploying."
