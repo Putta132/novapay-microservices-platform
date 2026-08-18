@@ -57,9 +57,33 @@ All 7 microservice Docker images are securely stored in AWS Elastic Container Re
 All 7 microservices deployed as Kubernetes services with internal ClusterIP networking. The "gateway-service-external" is exposed via an "AWS Elastic Load Balancer" for public traffic.
 
 ✅ kubectl get svc Screenshot
-[Kubernetes Services](assets/kubectl-services.png)
+![Kubernetes Services](assets/kubectl-services.png)
 
-📊 Monitoring & Observability
+---
+
+## 💾 Multi-Database Architecture & Caching (PostgreSQL & Redis)
+
+Each microservice operates on its own dedicated database schema to adhere to **Microservice Database-Per-Service** patterns:
+
+* 🔐 **`authdb` (auth-service)**: User registrations, credentials with BCrypt hashing.
+* 🏦 **`accountdb` (account-service)**: Bank accounts, ledger wallets, and active balances.
+* 💳 **`paymentdb` (payment-service)**: Payment order intents, status tracking, and idempotency protection.
+* 📋 **`transactiondb` (transaction-service)**: Immutable double-entry financial ledger.
+* ⚡ **`Redis 7`**: Sub-millisecond JWT session caching & API Gateway rate limiting.
+
+### ✅ Database & Cache Screenshots
+
+| Database Table | Screenshot |
+|---|---|
+| **Users (`authdb`)** | ![Auth Users](assets/db-users.png) |
+| **Accounts (`accountdb`)** | ![Accounts](assets/db-accounts.png) |
+| **Payments (`paymentdb`)** | ![Payments](assets/db-payments.png) |
+| **Transactions (`transactiondb`)** | ![Transactions](assets/db-transactions.png) |
+| **Redis Cache Keys** | ![Redis Cache](assets/redis-cache.png) |
+
+---
+
+## 📊 Monitoring & Observability
 The full "kube-prometheus-stack" (Prometheus + Grafana + Alertmanager) is deployed via Helm, providing real-time visibility into:
 - CPU & Memory Utilization
 - Pod Count per Namespace
