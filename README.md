@@ -4,6 +4,18 @@
 
 ---
 
+## 🖥️ Live Frontend — Running on Docker
+
+> Full-stack application running locally via Docker Compose with all 7 microservices connected end-to-end.
+
+### Login Page
+![NovaPay Login Page](assets/frontend-login.png)
+
+### Dashboard Overview
+![NovaPay Dashboard](assets/frontend-dashboard.png)
+
+---
+
 ## 🏗️ Architecture Overview
 The system consists of 7 independently scalable microservices routed through an API Gateway:
 1. `gateway-service` — Entry point, exposed via AWS LoadBalancer

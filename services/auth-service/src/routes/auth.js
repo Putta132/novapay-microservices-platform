@@ -9,7 +9,7 @@ const { getUserCache, setUserCache, checkLoginRateLimit, resetLoginAttempts, rev
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
-const registerSchema = Joi.object({ email: Joi.string().email().required(), password: Joi.string().min(8).required(), name: Joi.string().min(2).max(100).required() });
+const registerSchema = Joi.object({ email: Joi.string().email().required(), password: Joi.string().min(8).required(), name: Joi.string().min(2).max(100).required(), phone: Joi.string().optional().allow('') });
 const loginSchema = Joi.object({ email: Joi.string().email().required(), password: Joi.string().required() });
 
 // POST /api/auth/register

@@ -9,7 +9,7 @@
 // ─── CONFIG ──────────────────────────────────────────────────────
 // window.API_BASE is injected by NGINX from environment variable.
 // Falls back to localhost for local development.
-const API_BASE = window.API_BASE || 'http://localhost:3002';
+const API_BASE = '/api';
 
 // ─── STATE ───────────────────────────────────────────────────────
 let authToken = localStorage.getItem('novapay_token') || null;
@@ -203,9 +203,16 @@ async function refreshDashboard() {
 
 async function loadBalance() {
   try {
-    const data = await apiCall('GET', '/accounts/balance');
-    document.getElementById('total-balance').textContent = formatCurrency(data.balance || 0);
-    document.getElementById('account-number').textContent = 'Account: ' + (data.accountNumber || '············');
+    const data = await apiCall('GET', '/accounts');
+    const accounts = data.accounts || [];
+    if (accounts.length > 0) {
+      const totalBalance = accounts.reduce((sum, acc) => sum + parseFloat(acc.balance || 0), 0);
+      document.getElementById('total-balance').textContent = formatCurrency(totalBalance);
+      document.getElementById('account-number').textContent = 'Account: ' + accounts[0].account_number;
+    } else {
+      document.getElementById('total-balance').textContent = formatCurrency(0);
+      document.getElementById('account-number').textContent = 'No account yet';
+    }
   } catch (err) {
     document.getElementById('total-balance').textContent = '₹—';
     document.getElementById('account-number').textContent = 'Could not load';
